@@ -4,45 +4,6 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "convert": "pyuic5 -x main.ui -o main_ui.py",
-        "build": "webpack --mode production",
-        "start": "webpack-dev-server --mode development"
-    },
-    "dependencies": {
-        "@conectate/ct-elements": "file:/Users/herberth/Projects/Conectate/@conectate/ct-elements",
-        "codemirror": "^5.54.0",
-        "lit-element": "^2.2.1",
-        "pwa-helpers": "^0.9.1"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.10.0",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "^7.9.0",
-        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-        "@babel/plugin-syntax-import-meta": "^7.8.3",
-        "@babel/plugin-transform-async-to-generator": "^7.8.3",
-        "@babel/plugin-transform-runtime": "^7.10.0",
-        "@babel/preset-env": "^7.10.0",
-        "@types/codemirror": "^0.0.95",
-        "@types/terser-webpack-plugin": "^3.0.0",
-        "@types/webappsec-credential-management": "^0.5.1",
-        "@types/webpack-bundle-analyzer": "^3.8.0",
-        "@types/workbox-webpack-plugin": "^5.1.1",
-        "babel-loader": "^8.0.5",
-        "babel-plugin-bundled-import-meta": "^0.3.2",
-        "babel-plugin-template-html-minifier": "^4.1.0",
-        "clean-webpack-plugin": "^3.0.0",
-        "copy-webpack-plugin": "5.0.3",
-        "css-loader": "^3.5.3",
-        "html-webpack-plugin": "^4.3.0",
-        "prettier": "^2.0.2",
-        "svg-inline-loader": "^0.8.0",
-        "ts-loader": "^6.2.1",
-        "typescript": "^3.9.0-dev.20200329",
-        "webpack": "^4.41.2",
-        "webpack-bundle-analyzer": "^3.6.0",
-        "webpack-cli": "^3.3.5",
-        "webpack-dev-server": "^3.9.0",
-        "workbox-webpack-plugin": "^5.1.3"
+        "c": "pyuic5 -x ui/main.ui -o ui/main_ui.py"
     }
 }
