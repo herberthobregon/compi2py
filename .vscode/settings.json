@@ -1,0 +1,10 @@
+{
+    "python.pythonPath": "/Users/herberth/AppsX/pyusac/bin/python",
+    "python.pipenvPath": "/Users/herberth/AppsX/pyusac/bin/python",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#352a00",
+        "titleBar.activeBackground": "#725d00",
+        "titleBar.activeForeground": "#ffffff"
+    },
+    "python.formatting.provider": "black"
+}
