@@ -1,6 +1,6 @@
 
-from py.lang_def.lex1 import tokens
-from py.helpers.ast import ASTNode, ASTTypes
+from compi.ejemplo.lex1 import tokens
+from compi.helpers.ast import ASTNode, ASTTypes
 
 precedence = (
     ("left", "PLUS", "MINUS"),

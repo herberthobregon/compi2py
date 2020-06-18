@@ -1,0 +1,4 @@
+main:
+$t6 = read();
+$t7 = (int) $t6;
+print($t7);

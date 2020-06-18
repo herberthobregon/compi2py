@@ -1,0 +1,19 @@
+digraph ASTNode {
+	node9 [label="[9]\nstart\n"]
+	node3 [label="[3]\ndeclaracion_asignacion\n"]
+	node4 [label="[4]\n$t1\n"]
+	node3 -> node4
+	node2 [label="[2]\nexpresion_number\n"]
+	node1 [label="[1]\n1\n"]
+	node2 -> node1
+	node3 -> node2
+	node9 -> node3
+	node7 [label="[7]\ndeclaracion_asignacion\n"]
+	node8 [label="[8]\n$t2\n"]
+	node7 -> node8
+	node6 [label="[6]\nexpresion_number\n"]
+	node5 [label="[5]\n1\n"]
+	node6 -> node5
+	node7 -> node6
+	node9 -> node7
+}

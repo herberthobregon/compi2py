@@ -1,0 +1,15 @@
+main: 
+  $a0=5;
+  goto f1;
+ret0:
+  print($v0); 
+  exit;
+f1:
+  $a1 = $a0;
+  goto f2;
+ret1:
+  $v0 = $v1;
+  goto ret0;
+f2:
+  $v1 = $a1*$a1;
+  goto ret1;
