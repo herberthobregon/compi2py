@@ -6,7 +6,7 @@ from ui.code_editor import QCodeEditor
 from typing import List
 from compi.gramaticas import globales
 
-from run_grammar import get_ast
+from run_grammar import get_ast, debug_ast, step
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -57,7 +57,23 @@ class MainWindow(QtWidgets.QMainWindow):
             del self.editors[index]
 
     def debug(self):
-        pass
+        index = self.ui.tabWidget.currentIndex()
+        txt = self.editors[index].toPlainText()
+        if len(txt) > 2:
+            def println(t: str):
+                self.print(t)
+
+            root = debug_ast(txt, self, println)
+            self.ui.lb_debug_active.setText('TRUE')
+            self.ui.debugline.setText(str(root.line))
+
+    def step(self):
+        root = step()
+        self.ui.debugline.setText(str(root.line))
+
+    def stop_debug(self):
+        root = step()
+        self.ui.debugline.setText(str(root.line))
 
     def on_close_tab(self, index: int):
         count = self.ui.tabWidget.count() - 1
@@ -79,7 +95,9 @@ class MainWindow(QtWidgets.QMainWindow):
         txt = self.editors[index].toPlainText()
 
     def stop_run(self):
-        pass
+        self.ui.debugline.setText(str(0))
+        self.ui.lb_debug_active.setText('false')
+
 
     def open_file(self):
         dirr = QtCore.QDir()
@@ -129,10 +147,61 @@ class MainWindow(QtWidgets.QMainWindow):
         file.close()
 
     def report_errors(self):
-        pass
+        path = os.getcwd() + '/errores.html'
+        file = open(path, 'w')
+        rows = ['<tr><th>Type</th><th>Line</th><th>Col</th><th>descrip</th></tr>']
+        for el in globales.lErroresSemanticos:
+            rows.append('<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'.format(el.t, el.line, el.col, el.decrip))
+
+        for el in globales.lErrores:
+            rows.append('<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>'.format(el.t, el.line, el.col, el.decrip))
+        html = """
+                    <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Tabla de simbolos</title>
+                <style>
+            table {{
+              font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+              border-collapse: collapse;
+              width: 100%;
+              max-width: 500px;
+            margin: 0 auto;
+            }}
+
+            table td, table th {{
+              border: 1px solid #ddd;
+              padding: 8px;
+            }}
+
+            table tr:nth-child(even){{background-color: #f2f2f2;}}
+
+            table tr:hover {{background-color: #ddd;}}
+
+            table th {{
+              padding-top: 12px;
+              padding-bottom: 12px;
+              text-align: left;
+              background-color: #4CAF50;
+              color: white;
+            }}
+            </style>
+            </head>
+            <body>
+            <table>
+                {}
+            </table>
+            </body>
+            </html>
+                    """.format('\n'.join(rows))
+        file.write(html)
+        file.close()
+        subprocess.Popen(["open", path])
 
     def report_var_table(self):
-        path = os.getcwd() + '/sym.html'
+        path = os.getcwd() + '/functions.html'
         file = open(path, 'w')
         rows = ['<tr><th>Function</th><th>Type</th></tr>']
         for key in globales.all_tags:

@@ -9,6 +9,7 @@ import re
 
 cnx: Optional[QtWidgets.QWidget] = None
 console_handler: Optional[any] = None
+next_ats: Optional[ASTNode] = None
 
 
 def get_ast(txt: str, cnxx: any, console_handlerx: any) -> ASTNode:
@@ -28,6 +29,29 @@ def get_ast(txt: str, cnxx: any, console_handlerx: any) -> ASTNode:
     print("\n".join([str(i) for i in globales.sym_table]))
     parser.restart()
     return root
+
+
+def debug_ast(txt: str, cnxx: any, console_handlerx: any) -> ASTNode:
+    global cnx, console_handler, next_ats
+    console_handler = console_handlerx
+    cnx = cnxx
+    lexer = ply.lex.lex(module=lex1)
+    parser = ply.yacc.yacc(module=yacc1, tabmodule="yacc1_tab")
+    root: ASTNode = parser.parse(txt)  # the input
+
+    dot = Source(root.to_str())
+    dot.format = 'png'
+    dot.render('graph')
+
+    lista = root.genarar_lista()
+    next_ats = debug(lista)
+    return next_ats
+
+
+def step():
+    global cnx, console_handler, next_ats
+    next_ats = debug(next_ats)
+    return next_ats
 
 
 def evaluar_ast(value: ASTNode):
@@ -514,3 +538,26 @@ def run(root: ASTNode):
             continue
 
         root = root.next
+
+
+def debug(root: ASTNode):
+    global console_handler
+    if root.nid == 521:
+        print('..')
+    if root.typee == 'declaracion_asignacion':
+        eval_assign(root)
+    if root.typee == 'unset':
+        e_unset(root.childs[0].childs[0].typee)
+    elif root.typee == 'sentencia_control':
+        rsp = eval_control_statement(root)
+        if rsp['bool']:
+            return globales.all_tags[rsp['tag']].next
+    elif root.typee == 'salto_incondicional':
+        tag = root.childs[0].typee
+        return globales.all_tags[tag].next
+    elif root.typee == 'print':
+        console_handler(str(eval_expression(root.childs[0])).replace("\\n", "\n"))
+    elif root.typee == 'error':
+        console_handler("Hubo un error en la gramatica")
+
+    return root.next

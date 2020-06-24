@@ -28,9 +28,8 @@ class CError:
 entrada = ""
 etiquetilla = ""
 lEtiquetasAmbito = {}
-lErrores = []
-lErroresSemanticos = []
 
-
+lErrores: List[CError] = []
+lErroresSemanticos: List[CError] = []
 all_tags = {}
 sym_table: List[SymTable] = []

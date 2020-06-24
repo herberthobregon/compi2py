@@ -317,6 +317,81 @@
      </size>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_step_debbuger">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>10</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../static/icons/twotone_next_plan_black_36dp.png</normaloff>../static/icons/twotone_next_plan_black_36dp.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbConsole_2">
+    <property name="geometry">
+     <rect>
+      <x>457</x>
+      <y>10</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Debug line:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="debugline">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>10</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbConsole_3">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>30</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Debug active:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lb_debug_active">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>30</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>false</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -365,6 +440,7 @@
     <addaction name="actionReporte_Errores"/>
     <addaction name="actionTabla_de_Simbolos"/>
     <addaction name="actionAST"/>
+    <addaction name="actionTabla_de_simbolos_Funciones"/>
    </widget>
    <widget class="QMenu" name="menuAyudar">
     <property name="title">
@@ -480,6 +556,11 @@
   <action name="actionAST">
    <property name="text">
     <string>AST</string>
+   </property>
+  </action>
+  <action name="actionTabla_de_simbolos_Funciones">
+   <property name="text">
+    <string>Tabla de simbolos Funciones</string>
    </property>
   </action>
  </widget>
@@ -757,6 +838,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTabla_de_simbolos_Funciones</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>report_var_table()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_step_debbuger</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>step()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>497</x>
+     <y>29</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>on_close_tab(int)</slot>
@@ -772,5 +885,7 @@
   <slot>report_errors()</slot>
   <slot>report_sym_tab()</slot>
   <slot>report_ast()</slot>
+  <slot>report_var_table()</slot>
+  <slot>step()</slot>
  </slots>
 </ui>
