@@ -1,4 +1,7 @@
+struct punto{
+ int x;
+};
 int main(){
-  int hola = 1;
-  return 1;
+  struct punto mpt;
+  int hola = 1 + scanf();
 }

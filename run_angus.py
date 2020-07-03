@@ -21,8 +21,8 @@ def get_ast(txt: str, cnxx: any, console_handlerx: any) -> ASTNode:
     root: ASTNode = parser.parse(input=txt, lexer=lexer)  # the input
 
     dot = Source(root.to_str())
-    dot.format = 'png'
-    dot.render('graph')
+    dot.format = 'svg'
+    dot.render('report_angus_graph')
 
     lista = root.genarar_lista()
     run(lista)
@@ -447,8 +447,8 @@ def e_unset(key: int):
 
 
 def eval_modificar_array(root: ASTNode, value: any):
-    typee = root.typee
-    if typee == 'modificar_array':
+    id_symtab = root.typee
+    if id_symtab == 'modificar_array':
         key = root.childs[0].typee
         lista = root.childs[1]
         p_list = []
@@ -487,18 +487,18 @@ def eval_modificar_array(root: ASTNode, value: any):
         globales.sym_table.append(globales.SymTable(key, original_schema, 0, 0))
         return None
 
-    return typee
+    return id_symtab
 
 
 def eval_assign(root: ASTNode):
     der = eval_expression(root.childs[1])
-    izq = eval_modificar_array(root.childs[0], der)
+    key_symtab = eval_modificar_array(root.childs[0], der)
 
-    if izq:
+    if key_symtab:
         # Elimino el valor que estaba antes
-        rsp = list(filter(lambda x: (x.key != izq), globales.sym_table))
+        rsp = list(filter(lambda x: (x.key != key_symtab), globales.sym_table))
         globales.sym_table = rsp
-        globales.sym_table.append(globales.SymTable(izq, der, 0, 0))
+        globales.sym_table.append(globales.SymTable(key_symtab, der, 0, 0))
 
 
 def eval_control_statement(root: ASTNode):

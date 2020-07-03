@@ -1,0 +1,73 @@
+digraph ASTNode {
+	node84 [label="[84]\nstart\n"]
+	node51 [label="[51]\ndeclaracion_asignacion\n"]
+	node52 [label="[52]\n$t8\n"]
+	node51 -> node52
+	node50 [label="[50]\nexpresion_number\n"]
+	node49 [label="[49]\n1\n"]
+	node50 -> node49
+	node51 -> node50
+	node84 -> node51
+	node58 [label="[58]\ndeclaracion_asignacion\n"]
+	node59 [label="[59]\n$t22\n"]
+	node58 -> node59
+	node57 [label="[57]\n+\n"]
+	node54 [label="[54]\nexpresion_number\n"]
+	node53 [label="[53]\n5\n"]
+	node54 -> node53
+	node57 -> node54
+	node56 [label="[56]\nexpresion_number\n"]
+	node55 [label="[55]\n7\n"]
+	node56 -> node55
+	node57 -> node56
+	node58 -> node57
+	node84 -> node58
+	node62 [label="[62]\ndeclaracion_asignacion\n"]
+	node63 [label="[63]\n$t28\n"]
+	node62 -> node63
+	node61 [label="[61]\nexpresion_number\n"]
+	node60 [label="[60]\n$t22\n"]
+	node61 -> node60
+	node62 -> node61
+	node84 -> node62
+	node66 [label="[66]\nprint\n"]
+	node65 [label="[65]\nexpresion_number\n"]
+	node64 [label="[64]\n$t28\n"]
+	node65 -> node64
+	node66 -> node65
+	node84 -> node66
+	node72 [label="[72]\ndeclaracion_asignacion\n"]
+	node73 [label="[73]\n$t36\n"]
+	node72 -> node73
+	node71 [label="[71]\n+\n"]
+	node68 [label="[68]\nexpresion_number\n"]
+	node67 [label="[67]\n1\n"]
+	node68 -> node67
+	node71 -> node68
+	node70 [label="[70]\nexpresion_number\n"]
+	node69 [label="[69]\n2\n"]
+	node70 -> node69
+	node71 -> node70
+	node72 -> node71
+	node84 -> node72
+	node76 [label="[76]\nprint\n"]
+	node75 [label="[75]\nexpresion_number\n"]
+	node74 [label="[74]\n$t36\n"]
+	node75 -> node74
+	node76 -> node75
+	node84 -> node76
+	node79 [label="[79]\ndeclaracion_asignacion\n"]
+	node80 [label="[80]\n$t38\n"]
+	node79 -> node80
+	node78 [label="[78]\nexpresion_number\n"]
+	node77 [label="[77]\ncomo estas\n"]
+	node78 -> node77
+	node79 -> node78
+	node84 -> node79
+	node83 [label="[83]\nprint\n"]
+	node82 [label="[82]\nexpresion_number\n"]
+	node81 [label="[81]\n$t38\n"]
+	node82 -> node81
+	node83 -> node82
+	node84 -> node83
+}

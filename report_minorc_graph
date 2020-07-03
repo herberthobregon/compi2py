@@ -1,0 +1,75 @@
+digraph ASTNode {
+	node98 [label="[98]\ninit\n"]
+	node71 [label="[71]\ninstrucciones\n"]
+	node70 [label="[70]\nsentencias\n"]
+	node69 [label="[69]\ncreacion_struct\n"]
+	node68 [label="[68]\npunto\n"]
+	node69 -> node68
+	node67 [label="[67]\nlinstr\n"]
+	node65 [label="[65]\ndeclaracion_registros\n"]
+	node61 [label="[61]\ntipo_variable\n"]
+	node60 [label="[60]\nint\n"]
+	node61 -> node60
+	node65 -> node61
+	node64 [label="[64]\nlista_ids\n"]
+	node63 [label="[63]\ntipo_declaracion\n"]
+	node62 [label="[62]\nx\n"]
+	node63 -> node62
+	node64 -> node63
+	node65 -> node64
+	node67 -> node65
+	node69 -> node67
+	node70 -> node69
+	node71 -> node70
+	node97 [label="[97]\nsentencias\n"]
+	node96 [label="[96]\ndeclaracion_funcion\n"]
+	node73 [label="[73]\ntipo_variable\n"]
+	node72 [label="[72]\nint\n"]
+	node73 -> node72
+	node96 -> node73
+	node95 [label="[95]\nmain\n"]
+	node96 -> node95
+	node93 [label="[93]\nparam_func\n"]
+	node96 -> node93
+	node94 [label="[94]\nlinstr\n"]
+	node77 [label="[77]\ndeclaracion_structs\n"]
+	node76 [label="[76]\nstruct\n"]
+	node77 -> node76
+	node75 [label="[75]\ntipo_declaracion\n"]
+	node74 [label="[74]\nmpt\n"]
+	node75 -> node74
+	node77 -> node75
+	node94 -> node77
+	node92 [label="[92]\ndeclaracion_registros\n"]
+	node80 [label="[80]\ntipo_variable\n"]
+	node79 [label="[79]\nint\n"]
+	node80 -> node79
+	node92 -> node80
+	node91 [label="[91]\nlista_ids\n"]
+	node90 [label="[90]\ntipo_declaracion2\n"]
+	node89 [label="[89]\nhola\n"]
+	node90 -> node89
+	node82 [label="[82]\ntipo_asignacion\n"]
+	node81 [label="[81]\n=\n"]
+	node82 -> node81
+	node90 -> node82
+	node88 [label="[88]\n+\n"]
+	node84 [label="[84]\nexpresion_number\n"]
+	node83 [label="[83]\n1\n"]
+	node84 -> node83
+	node88 -> node84
+	node87 [label="[87]\nexpresion_callfuncion\n"]
+	node86 [label="[86]\ncall_funcion\n"]
+	node85 [label="[85]\nscanf\n"]
+	node86 -> node85
+	node87 -> node86
+	node88 -> node87
+	node90 -> node88
+	node91 -> node90
+	node92 -> node91
+	node94 -> node92
+	node96 -> node94
+	node97 -> node96
+	node71 -> node97
+	node98 -> node71
+}

@@ -1,6 +1,3 @@
 int main(){
-  inicio:
-  printf("Ingrese el primer numero:\n");
-  int primer_numero = scanf();
-  int a = 1+ 2;
+  int arr[] = {1};
 }

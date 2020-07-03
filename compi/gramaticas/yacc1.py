@@ -262,7 +262,10 @@ def p_acceso_arrayExp(t):
 
 
 def p_error(t: LexToken):
-    descripcion = "Error gramatical en: " + t.value
+    try:
+        descripcion = "Error gramatical en: " + t.value
+    except:
+        descripcion = 'Error gramatical en: ;'
     ErrorSintactico = CError(
         descripcion, t.lexer.lineno, find_column(entrada, t), "sintactico"
     )

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1130</width>
-    <height>756</height>
+    <height>802</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -157,7 +157,7 @@
       <x>20</x>
       <y>510</y>
       <width>1091</width>
-      <height>201</height>
+      <height>241</height>
      </rect>
     </property>
     <property name="palette">
@@ -340,23 +340,10 @@
      </size>
     </property>
    </widget>
-   <widget class="QLabel" name="lbConsole_2">
-    <property name="geometry">
-     <rect>
-      <x>917</x>
-      <y>10</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Debug line:</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="debugline">
     <property name="geometry">
      <rect>
-      <x>990</x>
+      <x>1000</x>
       <y>10</y>
       <width>58</width>
       <height>16</height>
@@ -415,6 +402,19 @@
      </size>
     </property>
    </widget>
+   <widget class="QLabel" name="debugline_2">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>10</y>
+      <width>71</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Debug Line:</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -460,10 +460,27 @@
     <property name="title">
      <string>Opciones</string>
     </property>
-    <addaction name="actionReporte_Errores"/>
-    <addaction name="actionTabla_de_Simbolos"/>
-    <addaction name="actionAST"/>
-    <addaction name="actionTabla_de_simbolos_Funciones"/>
+    <widget class="QMenu" name="menu_ANGUS">
+     <property name="title">
+      <string># ANGUS</string>
+     </property>
+     <addaction name="actionReporte_Errores"/>
+     <addaction name="actionTabla_de_Simbolos"/>
+     <addaction name="actionAST"/>
+     <addaction name="actionTabla_de_simbolos_Funciones"/>
+    </widget>
+    <widget class="QMenu" name="menu_MINOR_C">
+     <property name="title">
+      <string># MINOR-C</string>
+     </property>
+     <addaction name="actionAST_2"/>
+     <addaction name="actionReporte_de_Errores"/>
+     <addaction name="actionTabla_de_Simbolos_2"/>
+     <addaction name="actionTablaSimbolos_Funciones"/>
+    </widget>
+    <addaction name="menu_ANGUS"/>
+    <addaction name="separator"/>
+    <addaction name="menu_MINOR_C"/>
    </widget>
    <widget class="QMenu" name="menuAyudar">
     <property name="title">
@@ -584,6 +601,31 @@
   <action name="actionTabla_de_simbolos_Funciones">
    <property name="text">
     <string>Tabla de simbolos Funciones</string>
+   </property>
+  </action>
+  <action name="actionAST_2">
+   <property name="text">
+    <string>AST</string>
+   </property>
+  </action>
+  <action name="actionReporte_de_Errores">
+   <property name="text">
+    <string>Reporte de Errores</string>
+   </property>
+  </action>
+  <action name="actionTabla_de_Simbolos_2">
+   <property name="text">
+    <string>Tabla de Simbolos</string>
+   </property>
+  </action>
+  <action name="actionl">
+   <property name="text">
+    <string>l</string>
+   </property>
+  </action>
+  <action name="actionTablaSimbolos_Funciones">
+   <property name="text">
+    <string>TablaSimbolos Funciones</string>
    </property>
   </action>
  </widget>
@@ -909,6 +951,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAST_2</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>report_ast_minorc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionReporte_de_Errores</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>report_errors_minorc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTabla_de_Simbolos_2</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>report_sym_tab_minorc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTablaSimbolos_Funciones</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>report_sym_tab_fun_minorc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>564</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>on_close_tab(int)</slot>
@@ -927,5 +1033,10 @@
   <slot>report_var_table()</slot>
   <slot>step()</slot>
   <slot>run_convert()</slot>
+  <slot>report_ast_minorc()</slot>
+  <slot>report_sym_tab_minorc()</slot>
+  <slot>report_var_table_minorc()</slot>
+  <slot>report_errors_minorc()</slot>
+  <slot>report_sym_tab_fun_minorc()</slot>
  </slots>
 </ui>

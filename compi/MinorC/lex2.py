@@ -11,7 +11,7 @@ IS = r'(u|U|l|L)*'
 # Reserved keywords
 #
 keywords = (
-    '_BOOL', 'AUTO', 'BREAK', 'CASE', 'CHAR', 'CONST',
+    'AUTO', 'BREAK', 'CASE', 'CHAR', 'CONST',
     'CONTINUE', 'DEFAULT', 'DO', 'DOUBLE', 'ELSE', 'ENUM', 'EXTERN',
     'FLOAT', 'FOR', 'GOTO', 'IF', 'INLINE', 'INT', 'LONG',
     'REGISTER', 'OFFSETOF',
@@ -23,40 +23,37 @@ keywords = (
 keyword_map = {}
 
 for keyword in keywords:
-    if keyword == '_BOOL':
-        keyword_map['_Bool'] = keyword
-    else:
-        keyword_map[keyword.lower()] = keyword
+    keyword_map[keyword.lower()] = keyword
 
 tokens = (
-    'RMAIN',
-    'RDOUBLE',
-    'RMALLOC',
-    'RAUTO',
-    'RBREAK',
-    'RCASE',
-    'RCHAR',
-    'RCONST',
-    'RCONTINUE',
-    'RDEFAULT',
-    'RDO',
-    'RSWITCH',
-    'RELSE',
-    'RENUM',
-    'REXTERN',
-    'RFLOAT',
-    'RFOR',
-    'RIF',
+    'MAIN',
+    'DOUBLE',
+    'MALLOC',
+    'AUTO',
+    'BREAK',
+    'CASE',
+    'CHAR',
+    'CONST',
+    'CONTINUE',
+    'DEFAULT',
+    'DO',
+    'SWITCH',
+    'ELSE',
+    'ENUM',
+    'EXTERN',
+    'FLOAT',
+    'FOR',
+    'IF',
     'INT',
-    'RREGISTER',
-    'RRETURN',
-    'RSIZEOF',
-    'RSTRUCT',
-    'RVOID',
-    'RWHILE',
-    'RPRINT',
-    'RSCANF',
-    'RGOTO',
+    'REGISTER',
+    'RETURN',
+    'SIZEOF',
+    'STRUCT',
+    'VOID',
+    'WHILE',
+    'PRINT',
+    'SCANF',
+    'GOTO',
     'PARIZQ',
     'PARDER',
     'CORIZQ',
@@ -71,13 +68,13 @@ tokens = (
     'PUNTO',
     'COMA',
     'DOBLEACCESOPUNTERO',
-    'RAND',
-    'ROR',
-    'RNOT',
-    'RANDBIT',
-    'RORBIT',
-    'RNOTBIT',
-    'RXORBIT',
+    'AND',
+    'OR',
+    'NOT',
+    'ANDBIT',
+    'ORBIT',
+    'NOTBIT',
+    'XORBIT',
     'SHIFTIZQ',
     'SHIFTDER',
     'IGUAL',
@@ -109,30 +106,30 @@ tokens = (
 )
 
 # Tokens
-t_RMAIN = r'main'
-t_RDOUBLE = r'double'
-t_RMALLOC = r'malloc'
-t_RAUTO = r'auto'
-t_RBREAK = r'break'
-t_RCASE = r'case'
-t_RCHAR = r'char'
-t_RCONST = r'const'
-t_RCONTINUE = r'continue'
-t_RDEFAULT = r'default'
-t_RFLOAT = r'float'
-t_RPRINT = r'printf'
-t_RINT = r'int'
-t_RSTRUCT = r'struct'
-t_RIF = r'if'
-t_RELSE = r'else'
-t_RWHILE = r'while'
-t_RDO = r'do'
-t_RFOR = r'for'
-t_RSWITCH = r'switch'
-t_RSCANF = r'scanf'
-t_RGOTO = r'goto'
-t_RRETURN = r'return'
-t_RVOID = r'void'
+t_MAIN = r'main'
+t_DOUBLE = r'double'
+t_MALLOC = r'malloc'
+t_AUTO = r'auto'
+t_BREAK = r'break'
+t_CASE = r'case'
+t_CHAR = r'char'
+t_CONST = r'const'
+t_CONTINUE = r'continue'
+t_DEFAULT = r'default'
+t_FLOAT = r'float'
+t_PRINT = r'printf'
+t_INT = r'int'
+t_STRUCT = r'struct'
+t_IF = r'if'
+t_ELSE = r'else'
+t_WHILE = r'while'
+t_DO = r'do'
+t_FOR = r'for'
+t_SWITCH = r'switch'
+t_SCANF = r'scanf'
+t_GOTO = r'goto'
+t_RETURN = r'return'
+t_VOID = r'void'
 t_PARIZQ = r'\('
 t_PARDER = r'\)'
 t_CORIZQ = r'\['
@@ -144,14 +141,14 @@ t_MENOS = r'-'
 t_POR = r'\*'
 t_DIVIDIDO = r'/'
 t_MODULO = r'%'
-t_RAND = r'&&'
-t_ROR = r'\|\|'
-t_RNOT = r'!'
-t_RNOTBIT = r'~'
+t_AND = r'&&'
+t_OR = r'\|\|'
+t_NOT = r'!'
+t_NOTBIT = r'~'
 t_TERNARIO = r'\?'
-t_RORBIT = r'\|'
-t_RANDBIT = r'&'
-t_RXORBIT = r'\^'
+t_ORBIT = r'\|'
+t_ANDBIT = r'&'
+t_XORBIT = r'\^'
 t_SHIFTIZQ = r'<<'
 t_SHIFTDER = r'>>'
 t_IGUAL = r'=='
@@ -177,7 +174,7 @@ t_ASIGSHITFDER = r'\>\>\='
 t_ASIGAND = r'\&\='
 t_ASIGOR = r'\|\='
 t_ASIGXOR = r'\^\='
-
+t_ignore = " \t"
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -227,8 +224,8 @@ def find_column(input, token):
 
 
 def t_error(t):
-    descripcion = "Caracter no reconocido por MinorC: " + t.value[0]
+    descripcion = "Caracter no reconocido por MinorC: " + t.value
     ErrorLexico = CError(descripcion, t.lexer.lineno, find_column(entrada, t), "lexico")
-    print(ErrorLexico, find_column('', t))
+    print("ErrorLexico", ErrorLexico)
     lErrores.append(ErrorLexico)
     t.lexer.skip(1)

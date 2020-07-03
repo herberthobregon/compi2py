@@ -21,6 +21,8 @@ class ASTTypes:
 
 
 class ASTNode:
+    code = ''
+
     def __init__(self, typee: str, line: int = 0, col: int = 0, value=None, *args):
         global nid, eti
         eti.add(typee)
@@ -35,6 +37,9 @@ class ASTNode:
         self.nid = nid
 
     def add_child(self, c: ASTNode):
+        self.childs.append(c)
+
+    def append(self, c: ASTNode):
         self.childs.append(c)
 
     def genarar_lista(self):
@@ -65,6 +70,9 @@ class ASTNode:
 
     def __repr__(self):
         return "[{}]{}".format(self.nid, self.typee)
+
+    def __iter__(self):
+        return self.childs.__iter__()
 
 
 class LexToken:

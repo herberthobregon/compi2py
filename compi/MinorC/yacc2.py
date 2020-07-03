@@ -12,13 +12,13 @@ def find_column(inp: str, token: any):
 
 # Asociación de operadores y precedencia
 precedence = (
-    ('right', 'RNOT'),
-    ('left', 'RAND', 'ROR'),
+    ('right', 'NOT'),
+    ('left', 'AND', 'OR'),
     ('left', 'IGUAL', 'DIFERENTE'),
     ('left', 'MAYOR', 'MENOR'),
     ('left', 'MAYORIGUAL', 'MENORIGUAL', 'AUMENTO', 'DECREMENTO'),
-    ('right', 'RNOTBIT'),
-    ('left', 'RANDBIT', 'RORBIT', 'RXORBIT'),
+    ('right', 'NOTBIT'),
+    ('left', 'ANDBIT', 'ORBIT', 'XORBIT'),
     ('left', 'SHIFTIZQ', 'SHIFTDER'),
     ('left', 'MAS', 'MENOS'),
     ('left', 'POR', 'DIVIDIDO'),
@@ -30,10 +30,8 @@ precedence = (
 # Definición de la gramática
 def p_init(p):
     """ init : instrucciones"""
-    NodoInit = ASTNode("Init", p.lexer.lineno, 0)
-    NodoInit.hijos = p[1]
     r_shiftreduce_grammar.append(("Init", "instrucciones"))
-    p[0] = NodoInit
+    p[0] = ASTNode("init", p.lexer.lineno, 0, 0, p[1])
 
 
 def p_instrucciones_lista(p):
@@ -46,7 +44,7 @@ def p_instrucciones_lista(p):
 def p_instruccion_lista(p):
     """instrucciones    : instruccion"""
     r_shiftreduce_grammar.append(("instrucciones", "instruccion"))
-    p[0] = [p[1]]
+    p[0] = ASTNode("instrucciones", p.lexer.lineno, 0, 0, p[1])
 
 
 def p_instrucciones_evaluar(p):
@@ -61,6 +59,13 @@ def p_instrucciones_evaluar(p):
     p[0] = ASTNode("sentencias", p.lexer.lineno, 0, 0, p[1])
 
 
+def p_instrucciones_error(p):
+    """instruccion : error PTCOMA"""
+    print("entro")
+    r_shiftreduce_grammar.append(("error", "error"))
+    p[0] = ASTNode("error", p.lexer.lineno, find_column(entrada, p.slice[2]))
+
+
 def p_lista_sentencias(p):
     """lsentencias : lsentencias lsent"""
     r_shiftreduce_grammar.append(("sentencias", "sentencias"))
@@ -71,7 +76,7 @@ def p_lista_sentencias(p):
 def p_lista_sentencias2(p):
     """lsentencias : lsent"""
     r_shiftreduce_grammar.append(("sentencias", "sent"))
-    p[0] = [p[1]]
+    p[0] = ASTNode("lsentencias", p.lexer.lineno, 0, 0, p[1])
 
 
 def p_l_sent(p):
@@ -87,20 +92,16 @@ def p_l_sent(p):
              | sentencia_etiqueta
              | sentencia_goto"""
     r_shiftreduce_grammar.append(("lsent", "sentencia"))
-    p[0] = ASTNode("lista_sentencias", p.lexer.lineno, 0, 0, p[1])
+    p[0] = p[1]  # ASTNode("lista_sentencias", p.lexer.lineno, 0, 0, p[1])
 
 
 def p_crear_struct(p):
-    """crear_struct : RSTRUCT ID LLAVEIZQ lsentencias LLAVEDER"""
-    a = ASTNode("linstr", p.lexer.lineno, 0, 0, *[j for j in p[6]])
+    """crear_struct : STRUCT ID LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("crear_struct", str(p[2])))
+    a = ASTNode("linstr", p.lexer.lineno, 0, 0, *[j for j in p[4]])
     p[0] = ASTNode("creacion_struct", p.lexer.lineno, find_column(entrada, p.slice[2]), 0, ASTNode(p[2]), a)
 
 
-def p_instrucciones_error(p):
-    """instruccion : error PTCOMA"""
-    r_shiftreduce_grammar.append(("error", "error"))
-    p[0] = ASTNode("error", p.lexer.lineno, find_column(entrada, p.slice[2]))
 
 
 def p_sentencias_control(p):
@@ -120,44 +121,44 @@ def p_instrucciones_etiqueta(p):
 
 
 def p_instrucciones_goto(p):
-    """sentencia_goto : RGOTO ID PTCOMA"""
+    """sentencia_goto : GOTO ID PTCOMA"""
     r_shiftreduce_grammar.append(("sentencia_goto", str(p[2])))
     p[0] = ASTNode("sentencia_goto", p.lexer.lineno, find_column(entrada, p.slice[2]), 0, ASTNode(p[2]))
 
 
 def p_sentencia_return(p):
-    """sentencia_return : RRETURN expresion"""
+    """sentencia_return : RETURN expresion"""
     r_shiftreduce_grammar.append(("sentencia_return", "return_expresion"))
     p[0] = ASTNode("sentencias_return", p.lexer.lineno, find_column(entrada, p.slice[1]), 0, p[2])
 
 
 def p_sentencia_return2(p):
-    """sentencia_return : RRETURN"""
+    """sentencia_return : RETURN"""
     r_shiftreduce_grammar.append(("sentencia_return", "return"))
     p[0] = ASTNode("sentencias_return", p.lexer.lineno, find_column(entrada, p.slice[1]))
 
 
 def p_sentencia_break(p):
-    """sentencia_break : RBREAK"""
+    """sentencia_break : BREAK"""
     r_shiftreduce_grammar.append(("sentencia_break", "break"))
     p[0] = ASTNode("sentencias_break", p.lexer.lineno, find_column(entrada, p.slice[1]), 0, ASTNode(p[1]))
 
 
 def p_sentencia_continue(p):
-    """sentencia_continue : RCONTINUE"""
+    """sentencia_continue : CONTINUE"""
     r_shiftreduce_grammar.append(("sentencia_continue", "continue"))
     p[0] = ASTNode("sentencias_continue", p.lexer.lineno, find_column(entrada, p.slice[1]), 0, ASTNode(p[1]))
 
 
 def p_sentencia_if(p):
-    """sentencia_if : RIF PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER"""
+    """sentencia_if : IF PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("sentencia_if", "if_simple"))
     a = ASTNode("linstr", p.lexer.lineno, 0, 0, *[j for j in p[6]])
     p[0] = ASTNode("sentencia_if", p.lexer.lineno, find_column(entrada, p.slice[1]), 0, p[3], a)
 
 
 def p_sentencia_else(t):
-    """sentencia_if : RIF PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER RELSE LLAVEIZQ lsentencias LLAVEDER"""
+    """sentencia_if : IF PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER ELSE LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("sentencia_if", "if_else"))
     a = ASTNode("linstr", t.lexer.lineno, 0, 0, *[i for i in t[6]])
     b = ASTNode("linstr", t.lexer.lineno, 0, 0, *[i for i in t[10]])
@@ -165,21 +166,21 @@ def p_sentencia_else(t):
 
 
 def p_sentencia_else_if(t):
-    """sentencia_if : RIF PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER RELSE sentencia_if"""
+    """sentencia_if : IF PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER ELSE sentencia_if"""
     r_shiftreduce_grammar.append(("sentencia_if", "if_else_if"))
     c = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[6]])
     t[0] = ASTNode("sentencia_if", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, t[3], c, t[9])
 
 
 def p_sentencia_switch(t):
-    """sentencia_switch : RSWITCH PARIZQ expresion PARDER LLAVEIZQ l_casos LLAVEDER"""
+    """sentencia_switch : SWITCH PARIZQ expresion PARDER LLAVEIZQ l_casos LLAVEDER"""
     r_shiftreduce_grammar.append(("sentencia_switch", "switch_no_default"))
     a = ASTNode("l_casos", t.lexer.lineno, 0, 0, *[j for j in t[6]])
     t[0] = ASTNode("sentencia_switch", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, t[3], a)
 
 
 def p_sentencia_switch_default(t):
-    """sentencia_switch : RSWITCH PARIZQ expresion PARDER LLAVEIZQ l_casos sentencia_default LLAVEDER"""
+    """sentencia_switch : SWITCH PARIZQ expresion PARDER LLAVEIZQ l_casos sentencia_default LLAVEDER"""
     r_shiftreduce_grammar.append(("sentencia_switch", "switch_default"))
     a = ASTNode("l_casos", t.lexer.lineno, 0, 0, *[j for j in t[6]])
     t[0] = ASTNode("sentencia_switch", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, t[3], a, t[7])
@@ -199,21 +200,21 @@ def p_casos(t):
 
 
 def p_cases(t):
-    """casos : RCASE expresion DOSPUNTOS lsentencias"""
+    """casos : CASE expresion DOSPUNTOS lsentencias"""
     r_shiftreduce_grammar.append(("casos", "case_expresion"))
     c = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[4]])
     t[0] = ASTNode("case", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, t[2], c)
 
 
 def p_sentencia_default(t):
-    """sentencia_default : RDEFAULT DOSPUNTOS lsentencias"""
+    """sentencia_default : DEFAULT DOSPUNTOS lsentencias"""
     r_shiftreduce_grammar.append(("sentencia_default", "default"))
     a = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[3]])
     t[0] = ASTNode("default", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, a)
 
 
 def p_sentencia_for(t):
-    """sentencia_for : RFOR PARIZQ forinit PTCOMA expresion PTCOMA aum_dec PARDER LLAVEIZQ lsentencias LLAVEDER"""
+    """sentencia_for : FOR PARIZQ forinit PTCOMA expresion PTCOMA aum_dec PARDER LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("sentencia_for", "instrucciones"))
     a = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[10]])
     c = [t[3], t[5], t[7], a]
@@ -235,14 +236,14 @@ def p_aum_dec(t):
 
 
 def p_sentencia_while(t):
-    """sentencia_while : RWHILE PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER"""
+    """sentencia_while : WHILE PARIZQ expresion PARDER LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("sentencia_while", "while"))
     c = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[6]])
     t[0] = ASTNode("sentencia_while", t.lexer.lineno, find_column(entrada, t.slice[1]), t[3], c)
 
 
 def p_sentencia_dowhile(t):
-    """sentencia_dowhile : RDO LLAVEIZQ lsentencias LLAVEDER RWHILE PARIZQ expresion PARDER PTCOMA"""
+    """sentencia_dowhile : DO LLAVEIZQ lsentencias LLAVEDER WHILE PARIZQ expresion PARDER PTCOMA"""
     r_shiftreduce_grammar.append(("sentencia_dowhile", "do_while"))
     n = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[3]])
     t[0] = ASTNode("sentencia_dowhile", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, n, t[7])
@@ -251,8 +252,9 @@ def p_sentencia_dowhile(t):
 def p_declaracion_funciones(t):
     """declaracion_funciones : tipo_variable ID PARIZQ PARDER LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("declaracion_funciones", str(t[2])))
-    aux = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[6]])
-    c = [t[1], ASTNode(t[2]), aux]
+    aux = ASTNode("param_func", t.lexer.lineno, 0)
+    aux2 = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[6]])
+    c = [t[1], ASTNode(t[2]), aux, aux2]
     t[0] = ASTNode("declaracion_funcion", t.lexer.lineno, find_column(entrada, t.slice[2]), 0, *c)
 
 
@@ -266,7 +268,7 @@ def p_declaracion_funcion2(t):
 
 
 def p_declaracoin_funcionmain(t):
-    """declaracion_funciones : INT RMAIN PARIZQ PARDER LLAVEIZQ lsentencias LLAVEDER"""
+    """declaracion_funciones : INT MAIN PARIZQ PARDER LLAVEIZQ lsentencias LLAVEDER"""
     r_shiftreduce_grammar.append(("declaracion_funciones", "main"))
     aux = ASTNode("linstr", t.lexer.lineno, 0, 0, *[j for j in t[6]])
     t[0] = ASTNode("declaracion_funcion", t.lexer.lineno, find_column(entrada, t.slice[1]), 0, ASTNode(t[1]), ASTNode(t[2]), aux)
@@ -287,7 +289,7 @@ def p_lista_params2(t):
 
 def p_l_param(t):
     """l_param : tipo_variable ID
-                | RSTRUCT ID declar_opcion"""
+                | STRUCT ID declar_opcion"""
     r_shiftreduce_grammar.append(("l_param", "tipo_parametro"))
     if t[1] == 'struct':
         t[0] = ASTNode("l_param", t.lexer.lineno, find_column(entrada, t.slice[2]), 0, ASTNode(t[2]), t[3])
@@ -296,20 +298,20 @@ def p_l_param(t):
 
 
 def p_funcion_print(t):
-    """funcion_print : RPRINT PARIZQ CADENA COMA l_expresion PARDER"""
+    """funcion_print : PRINT PARIZQ CADENA COMA l_expresion PARDER"""
     r_shiftreduce_grammar.append(("funcion_print", "print_double_parameter"))
     aux = ASTNode("l_expresiones", t.lexer.lineno, 0, None, *[i for i in t[5]])
     t[0] = ASTNode("print", t.lexer.lineno, find_column(entrada, t.slice[1]), None, ASTNode(t[3]), aux)
 
 
 def p_funcion_print2(t):
-    """funcion_print : RPRINT PARIZQ CADENA PARDER"""
+    """funcion_print : PRINT PARIZQ CADENA PARDER"""
     r_shiftreduce_grammar.append(("funcion_print", "print_normal"))
     t[0] = ASTNode("print", t.lexer.lineno, find_column(entrada, t.slice[1]), None, ASTNode(t[3]))
 
 
 def p_declaracion_structs(t):
-    """declaracion_structs : RSTRUCT ID declar_opcion"""
+    """declaracion_structs : STRUCT ID declar_opcion"""
     t[0] = ASTNode("declaracion_structs", t.lexer.lineno, find_column(entrada, t.slice[1]), None, ASTNode(t[1]), t[3])
 
 
@@ -433,11 +435,11 @@ def p_tipos_asignacion(t):
 
 
 def p_tipo_variable(t):
-    """tipo_variable : RDOUBLE
+    """tipo_variable : DOUBLE
                     | INT
-                    | RFLOAT
-                    | RCHAR
-                    | RVOID"""
+                    | FLOAT
+                    | CHAR
+                    | VOID"""
     r_shiftreduce_grammar.append(("tipo_variable", str(t[1])))
     t[0] = ASTNode("tipo_variable", t.lexer.lineno, find_column(entrada, t.slice[1]), None, ASTNode(t[1]))
 
@@ -448,17 +450,17 @@ def p_expresion_binaria(t):
                   | expresion POR expresion
                   | expresion DIVIDIDO expresion
                   | expresion MODULO expresion
-                  | expresion RAND expresion
-                  | expresion ROR expresion
+                  | expresion AND expresion
+                  | expresion OR expresion
                   | expresion MAYOR expresion
                   | expresion MENOR expresion
                   | expresion MAYORIGUAL expresion
                   | expresion MENORIGUAL expresion
                   | expresion IGUAL expresion
                   | expresion DIFERENTE expresion
-                  | expresion RANDBIT expresion
-                  | expresion RORBIT expresion
-                  | expresion RXORBIT expresion
+                  | expresion ANDBIT expresion
+                  | expresion ORBIT expresion
+                  | expresion XORBIT expresion
                   | expresion SHIFTIZQ expresion
                   | expresion SHIFTDER expresion"""
     r_shiftreduce_grammar.append(("expresion", str(t[2])))
@@ -467,8 +469,8 @@ def p_expresion_binaria(t):
 
 def p_expresion_unaria(t):
     """expresion : MENOS expresion %prec UMENOS
-                  | RNOT expresion
-                  | RNOTBIT expresion"""
+                  | NOT expresion
+                  | NOTBIT expresion"""
     r_shiftreduce_grammar.append(("expresion", str(t[1])))
     t[0] = ASTNode("expresion_unaria", t.lexer.lineno, find_column(entrada, t.slice[1]), None, ASTNode(t[1]), t[2])
 
@@ -487,8 +489,8 @@ def p_expresion_casteo(t):
 
 def p_expresion_llamada_funcion(t):
     """callfuncion : ID PARIZQ l_expresion PARDER"""
-    childs = [*[i for i in t[3]], ASTNode(t[1]), ASTNode("l_expresiones", t.lexer.lineno, 0)]
     r_shiftreduce_grammar.append(("call_funcion", str(t[1])))
+    childs = [ASTNode(t[1]), ASTNode("l_expresiones", t.lexer.lineno, 0, 0, *[i for i in t[3]])]
     t[0] = ASTNode("call_funcion", t.lexer.lineno, find_column(entrada, t.slice[1]), None, *childs)
 
 
@@ -536,7 +538,7 @@ def p_expresion_aumdec(t):
 
 
 def p_expresion_scanf(t):
-    """expresion : RSCANF PARIZQ PARDER"""
+    """expresion : SCANF PARIZQ PARDER"""
     r_shiftreduce_grammar.append(("expresion", str(t[1])))
     t[0] = ASTNode("scanf", t.lexer.lineno, find_column(entrada, t.slice[1]), None, ASTNode(t[1]))
 
@@ -594,7 +596,7 @@ def p_lexpresion(t):
     t[0] = [t[1]]
 
 
-def p_error(t):
-    d = "Error gramatical en: " + str(t.value)
+def p_error(p):
+    d = "Error gramatical en: " + str(p.value)
     print(d)
-    lErrores.append(CError(d, t.lexer.lineno, find_column(entrada, t), "sintactico"))
+    lErrores.append(CError(d, p.lexer.lineno, find_column(entrada, p), "sintactico"))
