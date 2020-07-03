@@ -2,11 +2,14 @@ import sys
 import os, subprocess
 from PyQt5 import QtWidgets, QtCore, QtGui
 from ui.main_ui import Ui_MainWindow
-from ui.code_editor import QCodeEditor
+from ui import code_editor_minor_c as minor_c
+from ui import code_editor as angus_editor
 from typing import List
 from compi.gramaticas import globales
 
-from run_grammar import get_ast, debug_ast, step
+from run_angus import get_ast, debug_ast, step
+import run_minor_c
+
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -16,17 +19,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.show()
-        self.editors: List[QCodeEditor] = []
+        self.editors: List[List[minor_c.QCodeEditor]] = []
         self.add_tab()
         self.console = ''
 
     def add_tab(self):
-        text_edit = QCodeEditor()
-        text_edit.setGeometry(QtCore.QRect(10, 10, 731, 361))
+        container = QtWidgets.QWidget()
+        container.setObjectName("tab_3")
+        text_edit = minor_c.QCodeEditor(container)
+        text_edit2 = angus_editor.QCodeEditor(container)
+        text_edit.setGeometry(QtCore.QRect(10, 10, 521, 361))
+        text_edit2.setGeometry(QtCore.QRect(550, 10, 521, 361))
         text_edit.setObjectName("textEdit_{}".format(self.ui.tabWidget.count()))
         font = QtGui.QFont()
         font.setFamily("Monaco")
         text_edit.setFont(font)
+        text_edit2.setFont(font)
 
         palette = QtGui.QPalette()
 
@@ -41,9 +49,9 @@ class MainWindow(QtWidgets.QMainWindow):
         palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
 
         # text_edit.setPalette(palette)
-        self.editors.append(text_edit)
+        self.editors.append([text_edit, text_edit2])
 
-        self.ui.tabWidget.addTab(text_edit, '')
+        self.ui.tabWidget.addTab(container, '')
         # for i in range(self.ui.tabWidget.count()):
         self.ui.tabWidget.setTabText(self.ui.tabWidget.count() - 1, "Untitled-{}".format(self.ui.tabWidget.count()))
 
@@ -58,7 +66,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def debug(self):
         index = self.ui.tabWidget.currentIndex()
-        txt = self.editors[index].toPlainText()
+        txt = self.editors[index][1].toPlainText()
         if len(txt) > 2:
             def println(t: str):
                 self.print(t)
@@ -83,21 +91,28 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def run_desc(self):
         index = self.ui.tabWidget.currentIndex()
-        txt = self.editors[index].toPlainText()
+        txt = self.editors[index][1].toPlainText()
         if len(txt) > 2:
             def println(t: str):
                 self.print(t)
 
             root = get_ast(txt, self, println)
 
-    def run_asc(self):
+    def run_convert(self):
         index = self.ui.tabWidget.currentIndex()
-        txt = self.editors[index].toPlainText()
+        txt = self.editors[index][0].toPlainText()
+
+        if len(txt) > 2:
+            def println(t: str):
+                self.print(t)
+            root = run_minor_c.get_ast(txt, self, println)
+
+    def run_asc(self):
+        pass
 
     def stop_run(self):
         self.ui.debugline.setText(str(0))
         self.ui.lb_debug_active.setText('false')
-
 
     def open_file(self):
         dirr = QtCore.QDir()
@@ -111,17 +126,17 @@ class MainWindow(QtWidgets.QMainWindow):
         index = self.ui.tabWidget.currentIndex()
         parts = filename.split("/")
 
-        self.editors[index].path = filename
-        self.editors[index].filename = parts[len(parts) - 1]
+        self.editors[index][0].path = filename
+        self.editors[index][0].filename = parts[len(parts) - 1]
 
-        self.editors[index].setPlainText(txt)
-        self.ui.tabWidget.setTabText(index, self.editors[index].filename)
+        self.editors[index][0].setPlainText(txt)
+        self.ui.tabWidget.setTabText(index, self.editors[index][0].filename)
         self.ui.tabWidget.setTabToolTip(self.ui.tabWidget.count() - 1, filename)
 
     def save_file(self):
         dirr = QtCore.QDir()
         index = self.ui.tabWidget.currentIndex()
-        code_editor = self.editors[index]
+        code_editor = self.editors[index][0]
         if code_editor.path == "":
             qfile = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", dirr.absoluteFilePath('.'), "OLC2 Files (*.txt)")
             if len(qfile[0]) == 0:
@@ -137,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def save_as(self):
         index = self.ui.tabWidget.currentIndex()
-        code_editor = self.editors[index]
+        code_editor = self.editors[index][0]
         qfile = QtWidgets.QFileDialog.getSaveFileName(self, "Save File", QtCore.QDir.homePath(), "OLC2 Files (*.txt)")
         if len(qfile[0]) == 0:
             return
@@ -302,7 +317,8 @@ table th {{
         file.close()
         subprocess.Popen(["open", path])
 
-    def report_ast(self):
+    @staticmethod
+    def report_ast():
         path = os.getcwd() + '/sym.html'
         subprocess.Popen(["open", path])
 

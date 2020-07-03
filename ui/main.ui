@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>798</width>
-    <height>758</height>
+    <width>1130</width>
+    <height>756</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -63,7 +63,7 @@
    <widget class="QPushButton" name="btnDebug">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>740</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -109,7 +109,7 @@
    <widget class="QPushButton" name="btnStopRun">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>790</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -134,7 +134,7 @@
      <rect>
       <x>20</x>
       <y>60</y>
-      <width>761</width>
+      <width>1091</width>
       <height>411</height>
      </rect>
     </property>
@@ -156,8 +156,8 @@
      <rect>
       <x>20</x>
       <y>510</y>
-      <width>761</width>
-      <height>181</height>
+      <width>1091</width>
+      <height>201</height>
      </rect>
     </property>
     <property name="palette">
@@ -297,7 +297,7 @@
    <widget class="QPushButton" name="btnRunDesc">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>690</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -320,7 +320,7 @@
    <widget class="QPushButton" name="btn_step_debbuger">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>860</x>
       <y>10</y>
       <width>51</width>
       <height>41</height>
@@ -343,7 +343,7 @@
    <widget class="QLabel" name="lbConsole_2">
     <property name="geometry">
      <rect>
-      <x>457</x>
+      <x>917</x>
       <y>10</y>
       <width>71</width>
       <height>20</height>
@@ -356,7 +356,7 @@
    <widget class="QLabel" name="debugline">
     <property name="geometry">
      <rect>
-      <x>530</x>
+      <x>990</x>
       <y>10</y>
       <width>58</width>
       <height>16</height>
@@ -369,7 +369,7 @@
    <widget class="QLabel" name="lbConsole_3">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>920</x>
       <y>30</y>
       <width>91</width>
       <height>20</height>
@@ -382,7 +382,7 @@
    <widget class="QLabel" name="lb_debug_active">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>1010</x>
       <y>30</y>
       <width>91</width>
       <height>20</height>
@@ -392,13 +392,36 @@
      <string>false</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btnRunDesc_2">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>10</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Convert</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../static/icons/twotone_play_circle_filled_black_24dp.png</normaloff>../static/icons/twotone_play_circle_filled_black_24dp.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>798</width>
+     <width>1130</width>
      <height>22</height>
     </rect>
    </property>
@@ -567,22 +590,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>tabWidget</sender>
-   <signal>tabCloseRequested(int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>on_close_tab(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>214</x>
-     <y>211</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>249</x>
-     <y>486</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btnNuevo</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -653,7 +660,7 @@
    <slot>debug()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>302</x>
+     <x>762</x>
      <y>72</y>
     </hint>
     <hint type="destinationlabel">
@@ -669,7 +676,7 @@
    <slot>stop_run()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>352</x>
+     <x>812</x>
      <y>72</y>
     </hint>
     <hint type="destinationlabel">
@@ -781,7 +788,7 @@
    <slot>run_desc()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>272</x>
+     <x>732</x>
      <y>72</y>
     </hint>
     <hint type="destinationlabel">
@@ -861,12 +868,44 @@
    <slot>step()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>428</x>
-     <y>56</y>
+     <x>888</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
-     <x>497</x>
-     <y>29</y>
+     <x>1016</x>
+     <y>26</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnRunDesc_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>run_convert()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>312</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>36</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>tabCloseRequested(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>on_close_tab(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>214</x>
+     <y>211</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>486</y>
     </hint>
    </hints>
   </connection>
@@ -887,5 +926,6 @@
   <slot>report_ast()</slot>
   <slot>report_var_table()</slot>
   <slot>step()</slot>
+  <slot>run_convert()</slot>
  </slots>
 </ui>

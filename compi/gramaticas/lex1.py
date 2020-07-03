@@ -117,8 +117,6 @@ def t_ENTERO(t):
 
 def t_ID(t):
     r"[$][a-zA-Z]+[0-9]*"
-    # cosas como $t1
-    lEtiquetasAmbito.update({t.value: etiquetilla})
     return t
 
 
@@ -155,7 +153,6 @@ def t_ETIQUETA(t):
         t.type = "RXOR"
         return t
     elif t.value == "main":
-        guardar_etiqueta(t.value)
         t.type = "RMAIN"
         return t
     elif t.value == "exit":
@@ -165,7 +162,6 @@ def t_ETIQUETA(t):
         t.type = "RREAD"
         return t
     else:
-        guardar_etiqueta(t.value)
         return t
 
 
@@ -197,6 +193,6 @@ def t_newline(t):
 
 def t_error(t):
     descripcion = "Caracter no reconocido por Agus: " + t.value[0]
-    ErrorLexico = CError(descripcion, t.lexer.lineno, find_column(entrada, t), "lexico")
+    ErrorLexico = CError(descripcion, t.lexer.lineno, find_column('', t), "lexico")
     lErrores.append(ErrorLexico)
     t.lexer.skip(1)

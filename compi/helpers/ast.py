@@ -64,7 +64,7 @@ class ASTNode:
         return """digraph ASTNode {{\n{c}\n}}""".format(c=self.write_node())
 
     def __repr__(self):
-        return "[{}]{}".format(self.nid,self.typee)
+        return "[{}]{}".format(self.nid, self.typee)
 
 
 class LexToken:

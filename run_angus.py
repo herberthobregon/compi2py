@@ -18,7 +18,7 @@ def get_ast(txt: str, cnxx: any, console_handlerx: any) -> ASTNode:
     cnx = cnxx
     lexer = ply.lex.lex(module=lex1)
     parser = ply.yacc.yacc(module=yacc1, tabmodule="yacc1_tab")
-    root: ASTNode = parser.parse(txt)  # the input
+    root: ASTNode = parser.parse(input=txt, lexer=lexer)  # the input
 
     dot = Source(root.to_str())
     dot.format = 'png'
